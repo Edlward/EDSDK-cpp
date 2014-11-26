@@ -19,39 +19,30 @@ using namespace EDSDK;
 //    }
 //}
 
-class SimpleTetherApp {
-public:
-//    void prepareSettings(Settings* settings);
-    void setup();
-    void keyDown();
-    void draw();
 
-    void browserDidAddCamera(CameraRef camera);
-    void browserDidRemoveCamera(CameraRef camera);
-    void browserDidEnumerateCameras();
+void browserDidAddCamera(CameraRef camera);
+void browserDidRemoveCamera(CameraRef camera);
+void browserDidEnumerateCameras();
+void didRemoveCamera(CameraRef camera);
+void didAddFile(CameraRef camera, CameraFileRef file);
 
-    void didRemoveCamera(CameraRef camera);
-    void didAddFile(CameraRef camera, CameraFileRef file);
-
-private:
-    CameraRef mCamera;
+CameraRef mCamera;
 //    gl::Texture mPhotoTexture;
-};
 
 //void SimpleTetherApp::prepareSettings(Settings* settings) {
 //    settings->enableHighDensityDisplay();
 //    settings->setWindowSize(640, 480);
 //}
 
-void SimpleTetherApp::setup()
+void setup()
 {
-    CameraBrowser::instance()->connectAddedHandler(&SimpleTetherApp::browserDidAddCamera, this);
-    CameraBrowser::instance()->connectRemovedHandler(&SimpleTetherApp::browserDidRemoveCamera, this);
-    CameraBrowser::instance()->connectEnumeratedHandler(&SimpleTetherApp::browserDidEnumerateCameras, this);
+    CameraBrowser::instance()->connectAddedHandler(&browserDidAddCamera);
+    CameraBrowser::instance()->connectRemovedHandler(&browserDidRemoveCamera);
+    CameraBrowser::instance()->connectEnumeratedHandler(&browserDidEnumerateCameras);
     CameraBrowser::instance()->start();
 }
 
-void SimpleTetherApp::keyDown()
+void keyDown()
 {
     switch (getchar()) {
         case '\n':
@@ -64,22 +55,18 @@ void SimpleTetherApp::keyDown()
     }
 }
 
-void SimpleTetherApp::draw()
-{
-    
-}
 
 #pragma mark - CAMERA BROWSER
 
-void SimpleTetherApp::browserDidAddCamera(CameraRef camera) {
+void browserDidAddCamera(CameraRef camera) {
     std::cout << "added a camera: " << camera->getName() << std::endl;
     if (mCamera != NULL) {
         return;
     }
 
     mCamera = camera;
-    mCamera->connectRemovedHandler(&SimpleTetherApp::didRemoveCamera, this);
-    mCamera->connectFileAddedHandler(&SimpleTetherApp::didAddFile, this);
+    mCamera->connectRemovedHandler(&didRemoveCamera);
+    mCamera->connectFileAddedHandler(&didAddFile);
     std::cout << "grabbing camera: " << camera->getName() << std::endl;
 
     EDSDK::Camera::Settings settings = EDSDK::Camera::Settings();
@@ -91,7 +78,7 @@ void SimpleTetherApp::browserDidAddCamera(CameraRef camera) {
     }
 }
 
-void SimpleTetherApp::browserDidRemoveCamera(CameraRef camera) {
+void browserDidRemoveCamera(CameraRef camera) {
     // NB - somewhat redundant as the camera will notify handler first
     std::cout << "removed a camera: " << camera->getName() << std::endl;
     if (camera != mCamera) {
@@ -102,13 +89,13 @@ void SimpleTetherApp::browserDidRemoveCamera(CameraRef camera) {
     mCamera = NULL;
 }
 
-void SimpleTetherApp::browserDidEnumerateCameras() {
+void browserDidEnumerateCameras() {
     std::cout << "enumerated cameras" << std::endl;
 }
 
 #pragma mark - CAMERA
 
-void SimpleTetherApp::didRemoveCamera(CameraRef camera) {
+void didRemoveCamera(CameraRef camera) {
     std::cout << "removed a camera: " << camera->getName() << std::endl;
     if (camera != mCamera) {
         return;
@@ -118,19 +105,8 @@ void SimpleTetherApp::didRemoveCamera(CameraRef camera) {
     mCamera = NULL;
 }
 
-int main()
-{
-    SimpleTetherApp *app = new SimpleTetherApp();
-    app->setup();
-    while (1)
-    {
-        app->keyDown();
-    }
-    
-    return 0;
-}
 
-void SimpleTetherApp::didAddFile(CameraRef camera, CameraFileRef file)
+void didAddFile(CameraRef camera, CameraFileRef file)
 {
     boost::filesystem::path destinationFolderPath = boost::filesystem::path("/Users/zhao.he/Desktop/Captures");
     camera->requestDownloadFile(file, destinationFolderPath, [&](EdsError error, boost::filesystem::path outputFilePath) {
@@ -144,6 +120,18 @@ void SimpleTetherApp::didAddFile(CameraRef camera, CameraFileRef file)
 //            mPhotoTexture = gl::Texture(surface);
 //        }
 //    });
+}
+
+
+int main()
+{
+    setup();
+    while (1)
+    {
+        keyDown();
+    }
+    
+    return 0;
 }
 
 //CINDER_APP_NATIVE(SimpleTetherApp, RendererGl)
