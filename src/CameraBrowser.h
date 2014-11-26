@@ -1,6 +1,5 @@
 //
 //  CameraBrowser.h
-//  Cinder-EDSDK
 //
 //  Created by Jean-Pierre Mouilleseaux on 08 Dec 2013.
 //  Copyright 2013-2014 Chorded Constructions. All rights reserved.
@@ -8,9 +7,10 @@
 
 #pragma once
 
+#include <vector>
 #include "Camera.h"
 
-namespace Cinder { namespace EDSDK {
+namespace EDSDK {
 
 typedef std::shared_ptr<class CameraBrowser> CameraBrowserRef;
 
@@ -55,4 +55,4 @@ private:
     friend class Camera;
 };
 
-}}
+}

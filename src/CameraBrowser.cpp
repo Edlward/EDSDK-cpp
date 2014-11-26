@@ -1,6 +1,5 @@
 //
 //  CameraBrowser.cpp
-//  Cinder-EDSDK
 //
 //  Created by Jean-Pierre Mouilleseaux on 08 Dec 2013.
 //  Copyright 2013-2014 Chorded Constructions. All rights reserved.
@@ -8,10 +7,7 @@
 
 #include "CameraBrowser.h"
 
-using namespace ci;
-using namespace ci::app;
-
-namespace Cinder { namespace EDSDK {
+namespace EDSDK {
 
 CameraBrowserRef CameraBrowser::sInstance = 0;
 
@@ -27,8 +23,8 @@ CameraBrowser::CameraBrowser() {
 
     EdsError error = EdsInitializeSDK();
     if (error != EDS_ERR_OK) {
-        console() << "ERROR - failed to initialize SDK" << std::endl;
-        throw Exception();
+        std::cerr << "ERROR - failed to initialize SDK" << std::endl;
+        throw std::runtime_error("ERROR - failed to initialize SDK");
     }
 }
 
@@ -41,8 +37,8 @@ CameraBrowser::~CameraBrowser() {
 
     EdsError error = EdsTerminateSDK();
     if (error != EDS_ERR_OK) {
-        console() << "ERROR - failed to terminate SDK cleanly" << std::endl;
-        throw Exception();
+        std::cerr << "ERROR - failed to terminate SDK cleanly" << std::endl;
+        throw std::runtime_error("ERROR - failed to terminate SDK cleanly");
     }
 }
 
@@ -73,7 +69,7 @@ void CameraBrowser::start() {
 
     EdsError error = EdsSetCameraAddedHandler(CameraBrowser::handleCameraAdded, this);
     if (error != EDS_ERR_OK) {
-        console() << "ERROR - failed to set camera added handler" << std::endl;
+        std::cerr << "ERROR - failed to set camera added handler" << std::endl;
     }
 
     enumerateCameraList();
@@ -98,7 +94,7 @@ void CameraBrowser::enumerateCameraList() {
     EdsCameraListRef cameraList = NULL;
     EdsError error = EdsGetCameraList(&cameraList);
     if (error != EDS_ERR_OK) {
-        console() << "ERROR - failed to get camera list" << std::endl;
+        std::cerr << "ERROR - failed to get camera list" << std::endl;
         EdsRelease(cameraList);
         return;
     }
@@ -106,7 +102,7 @@ void CameraBrowser::enumerateCameraList() {
 	EdsUInt32 cameraCount = 0;
     error = EdsGetChildCount(cameraList, &cameraCount);
     if (error != EDS_ERR_OK) {
-        console() << "ERROR - failed to get camera count" << std::endl;
+        std::cerr << "ERROR - failed to get camera count" << std::endl;
         EdsRelease(cameraList);
         return;
     }
@@ -115,7 +111,7 @@ void CameraBrowser::enumerateCameraList() {
         EdsCameraRef cam = NULL;
         error = EdsGetChildAtIndex(cameraList, idx, &cam);
         if (error != EDS_ERR_OK) {
-            console() << "ERROR - failed to get camera: " << idx << std::endl;
+            std::cerr << "ERROR - failed to get camera: " << idx << std::endl;
             continue;
         }
 
@@ -143,7 +139,7 @@ void CameraBrowser::enumerateCameraList() {
 void CameraBrowser::removeCamera(const CameraRef& camera) {
     auto it = std::find_if(mCameras.begin(), mCameras.end(), [camera](CameraRef c) { return c->getPortName().compare(camera->getPortName()) == 0; });
     if (it == mCameras.end()) {
-        console() << "ERROR - failed to find removed camera:" << camera->getName() << " in camera browser's list" << std::endl;
+        std::cerr << "ERROR - failed to find removed camera:" << camera->getName() << " in camera browser's list" << std::endl;
         return;
     }
 
@@ -171,4 +167,4 @@ EdsError EDSCALLBACK CameraBrowser::handleCameraAdded(EdsVoid* inContext) {
     return EDS_ERR_OK;
 }
 
-}}
+}

@@ -1,6 +1,5 @@
 //
 //  Camera.h
-//  Cinder-EDSDK
 //
 //  Created by Jean-Pierre Mouilleseaux on 08 Dec 2013.
 //  Copyright 2013-2014 Chorded Constructions. All rights reserved.
@@ -8,19 +7,21 @@
 
 #pragma once
 
-#if defined(CINDER_MAC)
+#ifdef __APPLE__
     #define __MACOS__
-#elif defined(CINDER_MSW) || defined(CINDER_WINRT)
+#elif _WIN32_
     #error Target platform unsupported by Cinder-EDSDK
-#else
+#elif __linux__
     #error Target platform unsupported by EDSDK
 #endif
 
+#include <iostream>
+#include <boost/filesystem.hpp>
 #include "EDSDK.h"
-#include "cinder/Cinder.h"
-#include "cinder/ImageIo.h"
 
-namespace Cinder { namespace EDSDK {
+namespace EDSDK {
+
+namespace fs = boost::filesystem;
 
 typedef std::shared_ptr<class Camera> CameraRef;
 typedef std::shared_ptr<class CameraFile> CameraFileRef;
@@ -93,8 +94,8 @@ public:
     EdsError requestCloseSession();
 
     EdsError requestTakePicture();
-    void requestDownloadFile(const CameraFileRef& file, const ci::fs::path& destinationFolderPath, const std::function<void(EdsError error, ci::fs::path outputFilePath)>& callback);
-    void requestReadFile(const CameraFileRef& file, const std::function<void(EdsError error, ci::Surface8u surface)>& callback);
+    void requestDownloadFile(const CameraFileRef& file, const fs::path& destinationFolderPath, const std::function<void(EdsError error, fs::path outputFilePath)>& callback);
+//    void requestReadFile(const CameraFileRef& file, const std::function<void(EdsError error, ci::Surface8u surface)>& callback);
 
 private:
     Camera(const EdsCameraRef& camera);
@@ -111,4 +112,4 @@ private:
     bool mShouldKeepAlive;
 };
 
-}}
+}

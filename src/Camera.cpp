@@ -1,6 +1,5 @@
 //
 //  Camera.cpp
-//  Cinder-EDSDK
 //
 //  Created by Jean-Pierre Mouilleseaux on 08 Dec 2013.
 //  Copyright 2013-2014 Chorded Constructions. All rights reserved.
@@ -9,10 +8,7 @@
 #include "Camera.h"
 #include "CameraBrowser.h"
 
-using namespace ci;
-using namespace ci::app;
-
-namespace Cinder { namespace EDSDK {
+namespace EDSDK {
 
 #pragma mark CAMERA FILE
 
@@ -22,7 +18,7 @@ CameraFileRef CameraFile::create(const EdsDirectoryItemRef& directoryItem) {
 
 CameraFile::CameraFile(const EdsDirectoryItemRef& directoryItem) {
     if (!directoryItem) {
-        throw Exception();
+        throw std::runtime_error("");
     }
 
     EdsRetain(directoryItem);
@@ -30,8 +26,8 @@ CameraFile::CameraFile(const EdsDirectoryItemRef& directoryItem) {
 
     EdsError error = EdsGetDirectoryItemInfo(mDirectoryItem, &mDirectoryItemInfo);
     if (error != EDS_ERR_OK) {
-        console() << "ERROR - failed to get directory item info" << std::endl;
-        throw Exception();
+        std::cerr << "ERROR - failed to get directory item info" << std::endl;
+        throw std::runtime_error("ERROR - failed to get directory item info");
     }
 }
 
@@ -48,7 +44,7 @@ CameraRef Camera::create(const EdsCameraRef& camera) {
 
 Camera::Camera(const EdsCameraRef& camera) {
     if (!camera) {
-        throw Exception();
+        throw std::runtime_error("");
     }
 
     EdsRetain(camera);
@@ -56,7 +52,7 @@ Camera::Camera(const EdsCameraRef& camera) {
 
     EdsError error = EdsGetDeviceInfo(mCamera, &mDeviceInfo);
     if (error != EDS_ERR_OK) {
-        console() << "ERROR - failed to get device info" << std::endl;
+        std::cerr << "ERROR - failed to get device info" << std::endl;
         // TODO - NULL out mDeviceInfo
     }
 
@@ -65,15 +61,15 @@ Camera::Camera(const EdsCameraRef& camera) {
     // set event handlers
     error = EdsSetObjectEventHandler(mCamera, kEdsObjectEvent_All, Camera::handleObjectEvent, this);
     if (error != EDS_ERR_OK) {
-        console() << "ERROR - failed to set object event handler" << std::endl;
+        std::cerr << "ERROR - failed to set object event handler" << std::endl;
     }
     error = EdsSetPropertyEventHandler(mCamera, kEdsPropertyEvent_All, Camera::handlePropertyEvent, this);
     if (error != EDS_ERR_OK) {
-        console() << "ERROR - failed to set property event handler" << std::endl;
+        std::cerr << "ERROR - failed to set property event handler" << std::endl;
     }
     error = EdsSetCameraStateEventHandler(mCamera, kEdsStateEvent_All, Camera::handleStateEvent, this);
     if (error != EDS_ERR_OK) {
-        console() << "ERROR - failed to set object event handler" << std::endl;
+        std::cerr << "ERROR - failed to set object event handler" << std::endl;
     }
 }
 
@@ -107,7 +103,7 @@ EdsError Camera::requestOpenSession(const Settings &settings) {
 
     EdsError error = EdsOpenSession(mCamera);
     if (error != EDS_ERR_OK) {
-        console() << "ERROR - failed to open camera session" << std::endl;
+        std::cerr << "ERROR - failed to open camera session" << std::endl;
         return error;
     }
     mHasOpenSession = true;
@@ -116,7 +112,7 @@ EdsError Camera::requestOpenSession(const Settings &settings) {
     EdsUInt32 saveTo = settings.getPictureSaveLocation();
     error = EdsSetPropertyData(mCamera, kEdsPropID_SaveTo, 0, sizeof(saveTo) , &saveTo);
     if (error != EDS_ERR_OK) {
-        console() << "ERROR - failed to set save destination host/device" << std::endl;
+        std::cerr << "ERROR - failed to set save destination host/device" << std::endl;
         return error;
     }
 
@@ -125,7 +121,7 @@ EdsError Camera::requestOpenSession(const Settings &settings) {
         EdsCapacity capacity = {0x7FFFFFFF, 0x1000, 1};
         error = EdsSetCapacity(mCamera, capacity);
         if (error != EDS_ERR_OK) {
-            console() << "ERROR - failed to set capacity of host" << std::endl;
+            std::cerr << "ERROR - failed to set capacity of host" << std::endl;
             return error;
         }
     }
@@ -140,7 +136,7 @@ EdsError Camera::requestCloseSession() {
 
     EdsError error = EdsCloseSession(mCamera);
     if (error != EDS_ERR_OK) {
-        console() << "ERROR - failed to close camera session" << std::endl;
+        std::cerr << "ERROR - failed to close camera session" << std::endl;
         return error;
     }
 
@@ -155,17 +151,17 @@ EdsError Camera::requestTakePicture() {
 
     EdsError error = EdsSendCommand(mCamera, kEdsCameraCommand_TakePicture, 0);
     if (error != EDS_ERR_OK) {
-        console() << "ERROR - failed to take picture" << std::endl;
+        std::cerr << "ERROR - failed to take picture" << std::endl;
     }
     return error;
 }
 
-void Camera::requestDownloadFile(const CameraFileRef& file, const fs::path& destinationFolderPath, const std::function<void(EdsError error, ci::fs::path outputFilePath)>& callback) {
+    void Camera::requestDownloadFile(const CameraFileRef& file, const fs::path& destinationFolderPath, const std::function<void(EdsError error, boost::filesystem::path outputFilePath)>& callback) {
     // check if destination exists and create if not
     if (!fs::exists(destinationFolderPath)) {
         bool status = fs::create_directories(destinationFolderPath);
         if (!status) {
-            console() << "ERROR - failed to create destination folder path '" << destinationFolderPath << "'" << std::endl;
+            std::cerr << "ERROR - failed to create destination folder path '" << destinationFolderPath << "'" << std::endl;
             return callback(EDS_ERR_INTERNAL_ERROR, NULL);
         }
     }
@@ -175,19 +171,19 @@ void Camera::requestDownloadFile(const CameraFileRef& file, const fs::path& dest
     EdsStreamRef stream = NULL;
     EdsError error = EdsCreateFileStream(filePath.generic_string().c_str(), kEdsFileCreateDisposition_CreateAlways, kEdsAccess_ReadWrite, &stream);
     if (error != EDS_ERR_OK) {
-        console() << "ERROR - failed to create file stream" << std::endl;
+        std::cerr << "ERROR - failed to create file stream" << std::endl;
         goto download_cleanup;
     }
 
     error = EdsDownload(file->mDirectoryItem, file->getSize(), stream);
     if (error != EDS_ERR_OK) {
-        console() << "ERROR - failed to download" << std::endl;
+        std::cerr << "ERROR - failed to download" << std::endl;
         goto download_cleanup;
     }
 
     error = EdsDownloadComplete(file->mDirectoryItem);
     if (error != EDS_ERR_OK) {
-        console() << "ERROR - failed to mark download as complete" << std::endl;
+        std::cerr << "ERROR - failed to mark download as complete" << std::endl;
         goto download_cleanup;
     }
 
@@ -199,53 +195,53 @@ download_cleanup:
     callback(error, filePath);
 }
 
-void Camera::requestReadFile(const CameraFileRef& file, const std::function<void(EdsError error, ci::Surface8u surface)>& callback) {
-    Buffer buffer = NULL;
-    ci::Surface surface;
-
-    EdsStreamRef stream = NULL;
-    EdsError error = EdsCreateMemoryStream(0, &stream);
-    if (error != EDS_ERR_OK) {
-        console() << "ERROR - failed to create memory stream" << std::endl;
-        goto read_cleanup;
-    }
-
-    error = EdsDownload(file->mDirectoryItem, file->getSize(), stream);
-    if (error != EDS_ERR_OK) {
-        console() << "ERROR - failed to download" << std::endl;
-        goto read_cleanup;
-    }
-
-    error = EdsDownloadComplete(file->mDirectoryItem);
-    if (error != EDS_ERR_OK) {
-        console() << "ERROR - failed to mark download as complete" << std::endl;
-        goto read_cleanup;
-    }
-
-    void* data;
-    error = EdsGetPointer(stream, (EdsVoid**)&data);
-    if (error != EDS_ERR_OK) {
-        console() << "ERROR - failed to get pointer from stream" << std::endl;
-        goto read_cleanup;
-    }
-
-    EdsUInt32 length;
-    error = EdsGetLength(stream, &length);
-    if (error != EDS_ERR_OK) {
-        console() << "ERROR - failed to get stream length" << std::endl;
-        goto read_cleanup;
-    }
-
-    buffer = Buffer(data, length);
-    surface = Surface8u(loadImage(DataSourceBuffer::create(buffer), ImageSource::Options(), "jpg"));
-
-read_cleanup:
-    if (stream) {
-        EdsRelease(stream);
-    }
-
-    callback(error, surface);
-}
+//void Camera::requestReadFile(const CameraFileRef& file, const std::function<void(EdsError error, ci::Surface8u surface)>& callback) {
+//    Buffer buffer = NULL;
+//    ci::Surface surface;
+//
+//    EdsStreamRef stream = NULL;
+//    EdsError error = EdsCreateMemoryStream(0, &stream);
+//    if (error != EDS_ERR_OK) {
+//        std::cerr << "ERROR - failed to create memory stream" << std::endl;
+//        goto read_cleanup;
+//    }
+//
+//    error = EdsDownload(file->mDirectoryItem, file->getSize(), stream);
+//    if (error != EDS_ERR_OK) {
+//        std::cerr << "ERROR - failed to download" << std::endl;
+//        goto read_cleanup;
+//    }
+//
+//    error = EdsDownloadComplete(file->mDirectoryItem);
+//    if (error != EDS_ERR_OK) {
+//        std::cerr << "ERROR - failed to mark download as complete" << std::endl;
+//        goto read_cleanup;
+//    }
+//
+//    void* data;
+//    error = EdsGetPointer(stream, (EdsVoid**)&data);
+//    if (error != EDS_ERR_OK) {
+//        std::cerr << "ERROR - failed to get pointer from stream" << std::endl;
+//        goto read_cleanup;
+//    }
+//
+//    EdsUInt32 length;
+//    error = EdsGetLength(stream, &length);
+//    if (error != EDS_ERR_OK) {
+//        std::cerr << "ERROR - failed to get stream length" << std::endl;
+//        goto read_cleanup;
+//    }
+//
+//    buffer = Buffer(data, length);
+//    surface = Surface8u(loadImage(DataSourceBuffer::create(buffer), ImageSource::Options(), "jpg"));
+//
+//read_cleanup:
+//    if (stream) {
+//        EdsRelease(stream);
+//    }
+//
+//    callback(error, surface);
+//}
 
 #pragma mark - CALLBACKS
 
@@ -291,7 +287,7 @@ EdsError EDSCALLBACK Camera::handleStateEvent(EdsUInt32 inEvent, EdsUInt32 inPar
             if (camera->mHasOpenSession && camera->mShouldKeepAlive) {
                 EdsError error = EdsSendCommand(camera->mCamera, kEdsCameraCommand_ExtendShutDownTimer, 0);
                 if (error != EDS_ERR_OK) {
-                    console() << "ERROR - failed to extend shut down timer" << std::endl;
+                    std::cerr << "ERROR - failed to extend shut down timer" << std::endl;
                 }
             }
             break;
@@ -309,4 +305,4 @@ EdsError EDSCALLBACK Camera::handleStateEvent(EdsUInt32 inEvent, EdsUInt32 inPar
     return EDS_ERR_OK;
 }
 
-}}
+}
