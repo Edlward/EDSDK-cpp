@@ -1,0 +1,302 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		00381B611A2F8D4500DCE44B /* EDSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00381B601A2F8D4500DCE44B /* EDSDK.framework */; };
+		00381B671A2F8E6100DCE44B /* Camera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00381B621A2F8E6100DCE44B /* Camera.cpp */; };
+		00381B681A2F8E6100DCE44B /* CameraBrowser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00381B641A2F8E6100DCE44B /* CameraBrowser.cpp */; };
+		00381B6A1A2F8F9800DCE44B /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00381B691A2F8F9800DCE44B /* CoreFoundation.framework */; };
+		00F3E20E1A2E994500B4E52F /* SimpleTether.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00F3E20D1A2E994500B4E52F /* SimpleTether.cpp */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		000F4BD41A2E981D00E79D4B /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		000F4BD61A2E981D00E79D4B /* SimpleTether */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = SimpleTether; sourceTree = BUILT_PRODUCTS_DIR; };
+		00381B601A2F8D4500DCE44B /* EDSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = EDSDK.framework; path = ../../lib/EDSDK/Framework/EDSDK.framework; sourceTree = "<group>"; };
+		00381B621A2F8E6100DCE44B /* Camera.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Camera.cpp; path = ../../../src/Camera.cpp; sourceTree = "<group>"; };
+		00381B631A2F8E6100DCE44B /* Camera.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Camera.h; path = ../../../src/Camera.h; sourceTree = "<group>"; };
+		00381B641A2F8E6100DCE44B /* CameraBrowser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CameraBrowser.cpp; path = ../../../src/CameraBrowser.cpp; sourceTree = "<group>"; };
+		00381B651A2F8E6100DCE44B /* CameraBrowser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CameraBrowser.h; path = ../../../src/CameraBrowser.h; sourceTree = "<group>"; };
+		00381B661A2F8E6100DCE44B /* EDSDKcpp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EDSDKcpp.h; path = ../../../src/EDSDKcpp.h; sourceTree = "<group>"; };
+		00381B691A2F8F9800DCE44B /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
+		00F3E20D1A2E994500B4E52F /* SimpleTether.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SimpleTether.cpp; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		000F4BD31A2E981D00E79D4B /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				00381B6A1A2F8F9800DCE44B /* CoreFoundation.framework in Frameworks */,
+				00381B611A2F8D4500DCE44B /* EDSDK.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		000F4BCD1A2E981D00E79D4B = {
+			isa = PBXGroup;
+			children = (
+				00381B691A2F8F9800DCE44B /* CoreFoundation.framework */,
+				00381B601A2F8D4500DCE44B /* EDSDK.framework */,
+				00F3E20C1A2E994500B4E52F /* src */,
+				000F4BD71A2E981D00E79D4B /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		000F4BD71A2E981D00E79D4B /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				000F4BD61A2E981D00E79D4B /* SimpleTether */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		00F3E20C1A2E994500B4E52F /* src */ = {
+			isa = PBXGroup;
+			children = (
+				00381B621A2F8E6100DCE44B /* Camera.cpp */,
+				00381B631A2F8E6100DCE44B /* Camera.h */,
+				00381B641A2F8E6100DCE44B /* CameraBrowser.cpp */,
+				00381B651A2F8E6100DCE44B /* CameraBrowser.h */,
+				00381B661A2F8E6100DCE44B /* EDSDKcpp.h */,
+				00F3E20D1A2E994500B4E52F /* SimpleTether.cpp */,
+			);
+			path = src;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		000F4BD51A2E981D00E79D4B /* SimpleTether */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 000F4BDD1A2E981D00E79D4B /* Build configuration list for PBXNativeTarget "SimpleTether" */;
+			buildPhases = (
+				000F4BD21A2E981D00E79D4B /* Sources */,
+				000F4BD31A2E981D00E79D4B /* Frameworks */,
+				000F4BD41A2E981D00E79D4B /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = SimpleTether;
+			productName = SimpleTether;
+			productReference = 000F4BD61A2E981D00E79D4B /* SimpleTether */;
+			productType = "com.apple.product-type.tool";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		000F4BCE1A2E981D00E79D4B /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0610;
+				ORGANIZATIONNAME = "Wieden+Kennedy";
+				TargetAttributes = {
+					000F4BD51A2E981D00E79D4B = {
+						CreatedOnToolsVersion = 6.1;
+					};
+				};
+			};
+			buildConfigurationList = 000F4BD11A2E981D00E79D4B /* Build configuration list for PBXProject "SimpleTether" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 000F4BCD1A2E981D00E79D4B;
+			productRefGroup = 000F4BD71A2E981D00E79D4B /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				000F4BD51A2E981D00E79D4B /* SimpleTether */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		000F4BD21A2E981D00E79D4B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				00381B671A2F8E6100DCE44B /* Camera.cpp in Sources */,
+				00381B681A2F8E6100DCE44B /* CameraBrowser.cpp in Sources */,
+				00F3E20E1A2E994500B4E52F /* SimpleTether.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		000F4BDB1A2E981D00E79D4B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					/usr/local/include,
+				);
+				LIBRARY_SEARCH_PATHS = "";
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_LDFLAGS = (
+					"-lboost_system",
+					"-lboost_filesystem",
+				);
+				SDKROOT = macosx;
+				USER_HEADER_SEARCH_PATHS = ../../lib/EDSDK/Header;
+			};
+			name = Debug;
+		};
+		000F4BDC1A2E981D00E79D4B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					/usr/local/include,
+				);
+				LIBRARY_SEARCH_PATHS = "";
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_LDFLAGS = (
+					"-lboost_system",
+					"-lboost_filesystem",
+				);
+				SDKROOT = macosx;
+				USER_HEADER_SEARCH_PATHS = ../../lib/EDSDK/Header;
+			};
+			name = Release;
+		};
+		000F4BDE1A2E981D00E79D4B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"/Users/zhao.he/Dropbox/EDSDK-cpp/lib/EDSDK/Framework",
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					/usr/local/Cellar/boost/1.56.0/lib,
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		000F4BDF1A2E981D00E79D4B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"/Users/zhao.he/Dropbox/EDSDK-cpp/lib/EDSDK/Framework",
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					/usr/local/Cellar/boost/1.56.0/lib,
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		000F4BD11A2E981D00E79D4B /* Build configuration list for PBXProject "SimpleTether" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				000F4BDB1A2E981D00E79D4B /* Debug */,
+				000F4BDC1A2E981D00E79D4B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		000F4BDD1A2E981D00E79D4B /* Build configuration list for PBXNativeTarget "SimpleTether" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				000F4BDE1A2E981D00E79D4B /* Debug */,
+				000F4BDF1A2E981D00E79D4B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 000F4BCE1A2E981D00E79D4B /* Project object */;
+}
