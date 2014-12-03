@@ -1,24 +1,7 @@
 #include <boost/filesystem.hpp>
-//#include "cinder/app/AppNative.h"
 #include "Cinder-EDSDK.h"
 
-
 using namespace EDSDK;
-//using namespace ci;
-//using namespace ci::app;
-
-
-//void drawTextureInRect(gl::Texture texture, Rectf rect, bool fit = true) {
-//    if (fit) {
-//        Rectf textureRect = Rectf(Vec2i::zero(), texture.getSize());
-//        Rectf r = textureRect.getCenteredFit(rect, true);
-//        gl::draw(texture, r);
-//    } else {
-//        Area a =  Area(rect.getCenteredFit(texture.getBounds(), true));
-//        gl::draw(texture, a, rect);
-//    }
-//}
-
 
 void browserDidAddCamera(CameraRef camera);
 void browserDidRemoveCamera(CameraRef camera);
@@ -27,12 +10,6 @@ void didRemoveCamera(CameraRef camera);
 void didAddFile(CameraRef camera, CameraFileRef file);
 
 CameraRef mCamera;
-//    gl::Texture mPhotoTexture;
-
-//void SimpleTetherApp::prepareSettings(Settings* settings) {
-//    settings->enableHighDensityDisplay();
-//    settings->setWindowSize(640, 480);
-//}
 
 void setup()
 {
@@ -42,13 +19,18 @@ void setup()
     CameraBrowser::instance()->start();
 }
 
+void takePicture()
+{
+    if (mCamera != NULL && mCamera->hasOpenSession()) {
+        mCamera->requestTakePicture();
+    }
+}
+
 void keyDown()
 {
     switch (getchar()) {
         case '\n':
-            if (mCamera != NULL && mCamera->hasOpenSession()) {
-                mCamera->requestTakePicture();
-            }
+            takePicture();
             break;
         default:
             break;
@@ -122,16 +104,34 @@ void didAddFile(CameraRef camera, CameraFileRef file)
 //    });
 }
 
-
-int main()
+void main1()
 {
     setup();
     while (1)
     {
-        keyDown();
+        CFRunLoopRunInMode(kCFRunLoopDefaultMode, 0, false);
     }
+}
+
+void main2()
+{
+    setup();
+    int numShots = 3;
+    while ( numShots-- ) {
+        takePicture();
+        CFRunLoopRunInMode(kCFRunLoopDefaultMode, 2, false);
+    }
+}
+
+
+int main()
+{
+    // idle
+//    main1();
+    
+    // take 3 pictures with 2 seconds interval
+    // (program must start after camera is turned on due to lack of non-blocking keyboard event handler)
+    main2();
     
     return 0;
 }
-
-//CINDER_APP_NATIVE(SimpleTetherApp, RendererGl)
