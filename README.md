@@ -6,7 +6,7 @@ Image capture to memory or on-disk, camera keep-alive, simultaneous control of m
 
 
 ### Dependencies
-- [EDSDK]((http://www.usa.canon.com/cusa/consumer/standard_display/sdk_homepage) (2.14)
+- [EDSDK](http://www.usa.canon.com/cusa/consumer/standard_display/sdk_homepage) (2.14)
 - [Boost](http://www.boost.org/) (1.56)
 
 ### Install
