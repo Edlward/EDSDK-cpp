@@ -1,5 +1,5 @@
 #include <boost/filesystem.hpp>
-#include "Cinder-EDSDK.h"
+#include "EDSDKcpp.h"
 
 using namespace EDSDK;
 

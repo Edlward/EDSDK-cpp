@@ -1,5 +1,5 @@
-# Cinder-EDSDK
-`Cinder-EDSDK` is a [CinderBlock](http://libcinder.org/) to interact with Canon cameras. See Canon's [compatibility chart](http://www.usa.canon.com/cusa/consumer/standard_display/sdk_homepage#SDKQ7) for a list of supported cameras.
+# EDSDK-cpp
+`EDSDK-cpp` is a C++ Wrapper of Canon's EDSDK, based on [Cinder-EDSDK](https://github.com/pizthewiz/Cinder-EDSDK). See Canon's [compatibility chart](http://www.usa.canon.com/cusa/consumer/standard_display/sdk_homepage#SDKQ7) for a list of supported cameras.
 
 ### FEATURES
 Image capture to memory or on-disk, camera keep-alive, simultaneous control of multiple cameras, camera connect and disconnect handling. It does *not* offer Live View support.
@@ -35,12 +35,8 @@ void CaptureApp::didAddFile(CameraRef camera, CameraFileRef file) {
 - Wait days / weeks / months
 - Download
 - Unarchive
-- Move the _EDSDK_ folder into _Cinder-EDSDK/lib_
+- Move the `EDSDK` folder into `EDSDK-cpp/lib`
 
-Cinder-EDSDK has only been tested with the dev branch of the [Cinder repository](https://github.com/Cinder/Cinder) on OS X 10.9.1 with EDSDK 2.13.2+. The application target must be built i386 as the EDSDK-provided frameworks are not yet both built x86_64. Please see the [TODO](TODO.md) for the project status.
+EDSDK-cpp has only been tested on OS X 10.9.5 with EDSDK 2.14. The application target must be built i386 as the EDSDK-provided frameworks are not yet both built x86_64.
 
 *NOTE* - due to a bug introduced in EDSDK 2.10, the `CameraBrowser` will only call the camera removed handler for cameras with an open session.
-
-### GREETZ
-- [Red Paper Heart](http://www.redpaperheart.com)'s [Cinder-CanonSdk](https://github.com/redpaperheart/Cinder-CanonSdk)
-- [v002-Camera-Live](https://github.com/v002/v002-Camera-Live)
