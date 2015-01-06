@@ -6,14 +6,14 @@ Image capture to memory or on-disk, camera keep-alive, simultaneous control of m
 
 
 ### Dependencies
-- [EDSDK](http://www.usa.canon.com/cusa/consumer/standard_display/sdk_homepage) (2.14)
+- [EDSDK](http://www.usa.canon.com/cusa/consumer/standard_display/sdk_homepage) (2.15)
 - [Boost](http://www.boost.org/) (1.56)
 
 ### Install
 
 1. Move the `EDSDK` folder into `EDSDK-cpp/lib`
 2. `brew install boost --universal`
-3. Open `samples/SimpleTether/SimpleTether.xcodeproj` and build the target in 32-bit, as EDSDK is only in x86_64.
+3. Open `samples/SimpleTether/SimpleTether.xcodeproj` and build the target in x86_64 or 32-bit.
 
 ### Example Code
 
