@@ -57,6 +57,7 @@ Camera::Camera(const EdsCameraRef& camera) {
     }
 
     mHasOpenSession = false;
+    mIsLiveView = false;
 
     // set event handlers
     error = EdsSetObjectEventHandler(mCamera, kEdsObjectEvent_All, Camera::handleObjectEvent, this);
@@ -156,7 +157,7 @@ EdsError Camera::requestTakePicture() {
     return error;
 }
 
-    void Camera::requestDownloadFile(const CameraFileRef& file, const fs::path& destinationFolderPath, const std::function<void(EdsError error, boost::filesystem::path outputFilePath)>& callback) {
+void Camera::requestDownloadFile(const CameraFileRef& file, const fs::path& destinationFolderPath, const std::function<void(EdsError error, boost::filesystem::path outputFilePath)>& callback) {
     // check if destination exists and create if not
     if (!fs::exists(destinationFolderPath)) {
         bool status = fs::create_directories(destinationFolderPath);
@@ -202,33 +203,33 @@ download_cleanup:
 //    EdsStreamRef stream = NULL;
 //    EdsError error = EdsCreateMemoryStream(0, &stream);
 //    if (error != EDS_ERR_OK) {
-//        std::cerr << "ERROR - failed to create memory stream" << std::endl;
+//        console() << "ERROR - failed to create memory stream" << std::endl;
 //        goto read_cleanup;
 //    }
 //
 //    error = EdsDownload(file->mDirectoryItem, file->getSize(), stream);
 //    if (error != EDS_ERR_OK) {
-//        std::cerr << "ERROR - failed to download" << std::endl;
+//        console() << "ERROR - failed to download" << std::endl;
 //        goto read_cleanup;
 //    }
 //
 //    error = EdsDownloadComplete(file->mDirectoryItem);
 //    if (error != EDS_ERR_OK) {
-//        std::cerr << "ERROR - failed to mark download as complete" << std::endl;
+//        console() << "ERROR - failed to mark download as complete" << std::endl;
 //        goto read_cleanup;
 //    }
 //
 //    void* data;
 //    error = EdsGetPointer(stream, (EdsVoid**)&data);
 //    if (error != EDS_ERR_OK) {
-//        std::cerr << "ERROR - failed to get pointer from stream" << std::endl;
+//        console() << "ERROR - failed to get pointer from stream" << std::endl;
 //        goto read_cleanup;
 //    }
 //
 //    EdsUInt32 length;
 //    error = EdsGetLength(stream, &length);
 //    if (error != EDS_ERR_OK) {
-//        std::cerr << "ERROR - failed to get stream length" << std::endl;
+//        console() << "ERROR - failed to get stream length" << std::endl;
 //        goto read_cleanup;
 //    }
 //
@@ -242,6 +243,111 @@ download_cleanup:
 //
 //    callback(error, surface);
 //}
+    
+
+void Camera::startLiveView()
+{
+    std::cout << "start live view" << std::endl;
+    EdsError err = EDS_ERR_OK;
+    
+    // Get the output device for the live view image
+    EdsUInt32 device;
+    err = EdsGetPropertyData(mCamera, kEdsPropID_Evf_OutputDevice, 0, sizeof(device), &device );
+    
+    // PC live view starts by setting the PC as the output device for the live view image.
+    if(err == EDS_ERR_OK)
+    {
+        device |= kEdsEvfOutputDevice_PC;
+        err = EdsSetPropertyData(mCamera, kEdsPropID_Evf_OutputDevice, 0 , sizeof(device), &device);
+        mIsLiveView = true;
+    }
+    
+    // A property change event notification is issued from the camera if property settings are made successfully.
+    // Start downloading of the live view image once the property change notification arrives.
+}
+
+void Camera::endLiveView()
+{
+    std::cout << "end live view" << std::endl;
+    EdsError err = EDS_ERR_OK;
+    
+    // Get the output device for the live view image
+    EdsUInt32 device;
+    err = EdsGetPropertyData(mCamera, kEdsPropID_Evf_OutputDevice, 0, sizeof(device), &device );
+    
+    // PC live view ends if the PC is disconnected from the live view image output device.
+    if(err == EDS_ERR_OK)
+    {
+        device &= ~kEdsEvfOutputDevice_PC;
+        err = EdsSetPropertyData(mCamera, kEdsPropID_Evf_OutputDevice, 0 , sizeof(device), &device);
+    }
+    
+    mIsLiveView = false;
+}
+
+void Camera::toggleLiveView()
+{
+    if (mIsLiveView) {
+        endLiveView();
+    }
+    else {
+        startLiveView();
+    }
+}
+    
+EdsError Camera::requestDownloadEvfData( QImage& img )
+{
+    if( !mIsLiveView ){
+        std::cerr << "No live view" << std::endl;
+        startLiveView();
+        return EDS_ERR_OK;
+    }
+
+    EdsError err = EDS_ERR_OK;
+    EdsStreamRef stream = NULL;
+    EdsEvfImageRef evfImage = NULL;
+
+    // Create memory stream.
+    err = EdsCreateMemoryStream( 0, &stream);
+
+    // Create EvfImageRef.
+    if(err == EDS_ERR_OK) {
+        err = EdsCreateEvfImageRef(stream, &evfImage);
+    }
+
+    // Download live view image data.
+    if(err == EDS_ERR_OK){
+        err = EdsDownloadEvfImage(mCamera, evfImage);
+    }
+    
+    // Display image
+    EdsUInt32 length;
+    unsigned char* image_data;
+    EdsGetLength( stream, &length );
+    if( length <= 0 ) return EDS_ERR_OK;
+
+    EdsGetPointer( stream, (EdsVoid**)&image_data );
+
+    // reserve memory
+    img = QImage::fromData(image_data, length, "JPG");
+    
+//    Buffer buffer( image_data, length );
+//    surface = Surface( loadImage( DataSourceBuffer::create(buffer), ImageSource::Options(), "jpg" ) );
+    
+    // Release stream
+    if(stream != NULL) {
+        EdsRelease(stream);
+        stream = NULL;
+    }
+    // Release evfImage
+    if(evfImage != NULL) {
+        EdsRelease(evfImage);
+        evfImage = NULL;
+    }
+    
+    return EDS_ERR_OK;
+}
+    
 
 #pragma mark - CALLBACKS
 

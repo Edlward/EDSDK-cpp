@@ -29,11 +29,25 @@ void takePicture()
 void keyDown()
 {
     switch (getchar()) {
-        case '\n':
+        case 'l':
+            if (mCamera != NULL && mCamera->hasOpenSession()) {
+                mCamera->toggleLiveView();
+            }
+            break;
+        case 'p':
             takePicture();
             break;
         default:
             break;
+    }
+}
+
+void update()
+{
+    QImage img;
+    if ( mCamera != NULL && mCamera->hasOpenSession() && mCamera->isLiveViewing() ) {
+        mCamera->requestDownloadEvfData( img );
+        std::cout << "QImage: " << img.width() << " x " << img.height() << std::endl;
     }
 }
 
@@ -109,7 +123,9 @@ void main1()
     setup();
     while (1)
     {
-        CFRunLoopRunInMode(kCFRunLoopDefaultMode, 0, false);
+        keyDown();
+        update();
+        CFRunLoopRunInMode(kCFRunLoopDefaultMode, 1, true);
     }
 }
 
@@ -127,11 +143,11 @@ void main2()
 int main()
 {
     // idle
-//    main1();
+    main1();
     
     // take 3 pictures with 2 seconds interval
     // (program must start after camera is turned on due to lack of non-blocking keyboard event handler)
-    main2();
+//    main2();
     
     return 0;
 }

@@ -2,12 +2,18 @@
 EDSDK-cpp is a C++ wrapper of Canon's camera control framework EDSDK. See Canon's [compatibility chart](http://www.usa.canon.com/cusa/consumer/standard_display/sdk_homepage#SDKQ7) for a list of supported cameras.
 
 ### Features
-Image capture to memory or on-disk, camera keep-alive, simultaneous control of multiple cameras, camera connect and disconnect handling. It does *not* offer Live View support.
+- Image capture to memory or on-disk
+- Live view
+- Camera keep-alive
+- Simultaneous control of multiple cameras
 
 
 ### Dependencies
 - [EDSDK](http://www.usa.canon.com/cusa/consumer/standard_display/sdk_homepage) (2.15)
 - [Boost](http://www.boost.org/) (1.56)
+- [Qt](http://qt-project.org/) (4.8.6)
+
+Note: Qt is only to handle live view images, you may use another library to handle images.
 
 ### Install
 

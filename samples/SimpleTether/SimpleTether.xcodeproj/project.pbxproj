@@ -11,6 +11,7 @@
 		00381B671A2F8E6100DCE44B /* Camera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00381B621A2F8E6100DCE44B /* Camera.cpp */; };
 		00381B681A2F8E6100DCE44B /* CameraBrowser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00381B641A2F8E6100DCE44B /* CameraBrowser.cpp */; };
 		00381B6A1A2F8F9800DCE44B /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00381B691A2F8F9800DCE44B /* CoreFoundation.framework */; };
+		0047D7121A79640C00861CA2 /* QtGui.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0047D7111A79640C00861CA2 /* QtGui.framework */; };
 		00F3E20E1A2E994500B4E52F /* SimpleTether.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00F3E20D1A2E994500B4E52F /* SimpleTether.cpp */; };
 /* End PBXBuildFile section */
 
@@ -35,6 +36,7 @@
 		00381B651A2F8E6100DCE44B /* CameraBrowser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CameraBrowser.h; path = ../../../src/CameraBrowser.h; sourceTree = "<group>"; };
 		00381B661A2F8E6100DCE44B /* EDSDKcpp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EDSDKcpp.h; path = ../../../src/EDSDKcpp.h; sourceTree = "<group>"; };
 		00381B691A2F8F9800DCE44B /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
+		0047D7111A79640C00861CA2 /* QtGui.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QtGui.framework; path = ../../../../../../usr/local/Cellar/qt/4.8.6/lib/QtGui.framework; sourceTree = "<group>"; };
 		00F3E20D1A2E994500B4E52F /* SimpleTether.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SimpleTether.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -45,6 +47,7 @@
 			files = (
 				00381B6A1A2F8F9800DCE44B /* CoreFoundation.framework in Frameworks */,
 				00381B611A2F8D4500DCE44B /* EDSDK.framework in Frameworks */,
+				0047D7121A79640C00861CA2 /* QtGui.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -54,6 +57,7 @@
 		000F4BCD1A2E981D00E79D4B = {
 			isa = PBXGroup;
 			children = (
+				0047D7111A79640C00861CA2 /* QtGui.framework */,
 				00381B691A2F8F9800DCE44B /* CoreFoundation.framework */,
 				00381B601A2F8D4500DCE44B /* EDSDK.framework */,
 				00F3E20C1A2E994500B4E52F /* src */,
@@ -248,13 +252,30 @@
 		000F4BDE1A2E981D00E79D4B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					../../lib/EDSDK/Framework,
+					/usr/local/Cellar/qt/4.8.6/lib,
+				);
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					/usr/local/include,
+					/usr/local/Cellar/qt/4.8.6/lib/QtGui.framework/Versions/4/Headers,
 				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					/usr/local/Cellar/boost/1.56.0/lib,
+					/usr/local/Cellar/opencv/2.4.9/lib,
+				);
+				OTHER_CPLUSPLUSFLAGS = "$(OTHER_CFLAGS)";
+				OTHER_LDFLAGS = (
+					"-lboost_system",
+					"-lboost_filesystem",
+					"-lopencv_core",
+					"-lopencv_highgui",
+					"-F../../lib/EDSDK/Framework",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -263,13 +284,30 @@
 		000F4BDF1A2E981D00E79D4B /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					../../lib/EDSDK/Framework,
+					/usr/local/Cellar/qt/4.8.6/lib,
+				);
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					/usr/local/include,
+					/usr/local/Cellar/qt/4.8.6/lib/QtGui.framework/Versions/4/Headers,
 				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					/usr/local/Cellar/boost/1.56.0/lib,
+					/usr/local/Cellar/opencv/2.4.9/lib,
+				);
+				OTHER_CPLUSPLUSFLAGS = "$(OTHER_CFLAGS)";
+				OTHER_LDFLAGS = (
+					"-lboost_system",
+					"-lboost_filesystem",
+					"-lopencv_core",
+					"-lopencv_highgui",
+					"-F../../lib/EDSDK/Framework",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};

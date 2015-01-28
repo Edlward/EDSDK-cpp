@@ -10,13 +10,16 @@
 #ifdef __APPLE__
     #define __MACOS__
 #elif _WIN32_
-    #error Target platform unsupported by Cinder-EDSDK
+    #error Target platform unsupported by EDSDK-cpp
 #elif __linux__
     #error Target platform unsupported by EDSDK
 #endif
 
 #include <iostream>
 #include <boost/filesystem.hpp>
+#include <QImage>
+//#include <opencv2/core/core.hpp>
+//#include <opencv2/highgui/highgui.hpp>
 #include "EDSDK.h"
 
 namespace EDSDK {
@@ -96,6 +99,13 @@ public:
     EdsError requestTakePicture();
     void requestDownloadFile(const CameraFileRef& file, const fs::path& destinationFolderPath, const std::function<void(EdsError error, fs::path outputFilePath)>& callback);
 //    void requestReadFile(const CameraFileRef& file, const std::function<void(EdsError error, ci::Surface8u surface)>& callback);
+    
+    void startLiveView();
+    void endLiveView();
+    void toggleLiveView();
+    EdsError requestDownloadEvfData( QImage& img );
+    bool isLiveViewing() const { return mIsLiveView; };
+    
 
 private:
     Camera(const EdsCameraRef& camera);
@@ -110,6 +120,7 @@ private:
     EdsDeviceInfo mDeviceInfo;
     bool mHasOpenSession;
     bool mShouldKeepAlive;
+    bool mIsLiveView;
 };
 
 }
